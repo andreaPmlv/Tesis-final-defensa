@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "app-tesis": {
+    "tesis-finaldefensa": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -57,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "app-tesis:build:production"
+              "buildTarget": "tesis-finaldefensa:build:production"
             },
             "development": {
-              "buildTarget": "app-tesis:build:development"
+              "buildTarget": "tesis-finaldefensa:build:development"
             }
           },
           "defaultConfiguration": "development"
