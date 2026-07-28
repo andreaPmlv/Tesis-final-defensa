@@ -749,8 +749,9 @@ def edit_user(user_id):
 
     return render_template('edit_user.html', user=user_to_edit)
 
+with app.app_context():
+    db.create_all()
+    ensure_database_schema()
+
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
-        ensure_database_schema()
     app.run(debug=True)
