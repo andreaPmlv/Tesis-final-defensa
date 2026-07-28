@@ -94,7 +94,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['PROCESSED_FOLDER'] = PROCESSED_FOLDER
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'esto-es-super-secreto-cambialo-luego')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
-    'DATABASE_URL', 'sqlite:///' + os.path.join(BASE_DIR, 'isoscore.db')
+    'DATABASE_URL', 'sqlite:///' + os.path.join(BASE_DIR, 'instance', 'isoscore.db')
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.config['SESSION_COOKIE_HTTPONLY'] = True
@@ -114,6 +114,7 @@ s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, 'instance'), exist_ok=True)
 
 
 class User(db.Model, UserMixin):
