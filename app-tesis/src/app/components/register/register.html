@@ -1,0 +1,85 @@
+<section class="min-h-screen bg-black flex items-center justify-center p-6 relative overflow-hidden">
+  <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-iso-gold/10 rounded-full blur-[120px]"></div>
+  <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-iso-gold/5 rounded-full blur-[100px]"></div>
+
+  <div class="w-full max-w-md z-10">
+    <a routerLink="/" class="flex items-center gap-2 text-iso-gold/50 hover:text-iso-gold transition-colors mb-8 uppercase tracking-[0.3em] text-[10px] group">
+      <span class="group-hover:-translate-x-1 transition-transform">← Volver al inicio</span>
+    </a>
+
+    <div class="bg-white/[0.03] backdrop-blur-2xl border border-white/10 p-10 rounded-3xl shadow-2xl">
+      <div class="text-center mb-10">
+        <h2 class="text-white font-serif text-3xl mb-2 tracking-widest uppercase">Registro</h2>
+        <p class="text-gray-500 text-[9px] tracking-[0.4em] uppercase font-light">Crea tu cuenta institucional</p>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
+        <div *ngIf="errorMessage" class="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-[10px] uppercase tracking-widest text-red-300">
+          {{ errorMessage }}
+        </div>
+
+        <div *ngIf="successMessage" class="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-[10px] uppercase tracking-widest text-emerald-300">
+          {{ successMessage }}
+        </div>
+        
+        <div class="space-y-2">
+          <label class="text-[9px] text-iso-gold/60 uppercase tracking-widest ml-1">Nombre y Apellido</label>
+          <input formControlName="username" type="text" placeholder="Ej. Andrea Molina" 
+            class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white text-sm focus:outline-none focus:border-iso-gold/40 transition-all">
+          <p *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid" class="text-red-500 text-[8px] uppercase tracking-widest ml-1">Nombre obligatorio (min. 3 letras)</p>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-[9px] text-iso-gold/60 uppercase tracking-widest ml-1">Correo Electrónico</label>
+          <input formControlName="email" type="email" placeholder="usuario@elsistema.org" 
+            class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white text-sm focus:outline-none focus:border-iso-gold/40 transition-all">
+          <p *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid" class="text-red-500 text-[8px] uppercase tracking-widest ml-1">Correo inválido</p>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-[9px] text-iso-gold/60 uppercase tracking-widest ml-1">Contraseña</label>
+          <div class="relative">
+            <input formControlName="password" [type]="showPassword ? 'text' : 'password'" placeholder="••••••••" 
+              class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 pr-14 text-white text-sm focus:outline-none focus:border-iso-gold/40 transition-all">
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-400 hover:text-iso-gold transition-colors"
+              [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+              <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                <circle cx="12" cy="12" r="3" stroke-width="1.8"></circle>
+              </svg>
+              <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 3l18 18" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.58 10.58A2 2 0 0012 14a2 2 0 001.42-.58" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.88 5.09A10.94 10.94 0 0112 5c4.48 0 8.27 2.94 9.54 7a10.96 10.96 0 01-4.04 5.14M6.23 6.23A10.95 10.95 0 002.46 12a10.96 10.96 0 005.31 6.01" />
+              </svg>
+            </button>
+          </div>
+          <p *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['required']" class="text-red-500 text-[8px] uppercase tracking-widest ml-1">La contraseña es obligatoria</p>
+          <p *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['minlength']" class="text-red-500 text-[8px] uppercase tracking-widest ml-1">Debe tener al menos 8 caracteres</p>
+          <p *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.errors?.['pattern']" class="text-red-500 text-[8px] uppercase tracking-widest ml-1">Incluye una mayúscula y un número</p>
+        </div>
+
+        <button 
+          type="submit"
+          [disabled]="isSubmitting"
+          class="w-full bg-iso-gold text-black font-bold py-5 mt-4 rounded-xl uppercase tracking-[0.3em] text-[10px] hover:bg-white hover:scale-[1.02] active:scale-95 transition-all duration-500 shadow-lg shadow-iso-gold/10">
+          {{ isSubmitting ? 'CREANDO...' : 'REGISTRARSE' }}
+        </button>
+
+        <div class="text-center mt-6">
+          <p routerLink="/forgot-password" class="cursor-pointer text-gray-500 text-[9px] tracking-widest uppercase hover:text-iso-gold transition-colors">
+            ¿Olvidaste tu contraseña? <span class="text-iso-gold underline underline-offset-4">Recupérala aquí</span>
+          </p>
+        </div>
+        <div class="text-center mt-6">
+          <p routerLink="/login" class="cursor-pointer text-gray-500 text-[9px] tracking-widest uppercase hover:text-iso-gold transition-colors">
+            ¿Ya tienes cuenta? <span class="text-iso-gold underline underline-offset-4">Ingresa aquí</span>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

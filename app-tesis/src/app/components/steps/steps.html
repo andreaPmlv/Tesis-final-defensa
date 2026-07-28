@@ -1,0 +1,97 @@
+<section class="min-h-screen bg-[#050505] py-20 px-6 font-sans">
+  <div class="max-w-[1400px] mx-auto">
+    
+    <div class="text-center mb-16">
+      <h2 class="text-[#d4af37] font-serif text-4xl tracking-[0.3em] uppercase mb-4 italic">Módulo de Transposición</h2>
+      <p class="text-gray-500 text-[10px] tracking-[0.4em] uppercase font-bold">Panel de configuración global</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="mb-8 rounded-3xl border border-red-500/20 bg-red-500/10 px-6 py-4 text-[10px] uppercase tracking-widest text-red-300">
+      {{ errorMessage }}
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <div class="bg-[#0a0a0a] border border-white/5 p-10 rounded-[40px] shadow-2xl flex flex-col text-center">
+        <div class="mb-8">
+          <span class="text-gray-700 text-xs font-bold tracking-widest uppercase block mb-2">Paso 01</span>
+          <h3 class="text-[#d4af37] font-serif text-xl tracking-[0.2em] uppercase italic">Sube tu archivo</h3>
+        </div>
+        
+        <label [class.opacity-50]="procesando" class="cursor-pointer group flex-grow flex flex-col justify-center items-center border-2 border-dashed border-white/10 rounded-[30px] p-10 hover:border-[#d4af37]/40 transition-all bg-[#0c0c0c] hover:bg-[#121212]">
+          <div class="text-5xl mb-6 opacity-30 group-hover:opacity-100 transition-opacity group-hover:scale-110 duration-300">📁</div>
+          <p class="text-gray-500 text-[10px] uppercase tracking-[0.2em] leading-relaxed">Click para subir partitura<br>(XML / MusicXML / MIDI)</p>
+          <input type="file" class="hidden" accept=".xml,.musicxml,.mxl,.mid,.midi" [disabled]="procesando" (change)="onFileSelected($event)">
+        </label>
+
+        <div class="mt-6 h-8">
+          <p *ngIf="nombreArchivo" class="text-[#d4af37] text-[10px] uppercase tracking-widest font-bold animate-fade-in">
+            ✓ {{nombreArchivo}}
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-[#0a0a0a] border border-white/5 p-10 rounded-[40px] shadow-2xl flex flex-col">
+        <div class="mb-8 text-center">
+          <span class="text-gray-700 text-xs font-bold tracking-widest uppercase block mb-2">Paso 02</span>
+          <h3 class="text-[#d4af37] font-serif text-xl tracking-[0.2em] uppercase italic">Selecciona tu instrumento</h3>
+        </div>
+
+        <input type="text" [(ngModel)]="busqueda" [disabled]="procesando || cargandoInstrumentos" placeholder="Buscar instrumento..." class="w-full bg-[#121212] border border-white/10 rounded-full py-4 px-8 text-white text-[11px] focus:border-[#d4af37]/70 focus:outline-none transition-all tracking-widest mb-6 shadow-inner disabled:opacity-50">
+        
+        <div *ngIf="cargandoInstrumentos" class="flex-grow flex items-center justify-center text-[10px] uppercase tracking-[0.3em] text-gray-500">
+          Cargando instrumentos...
+        </div>
+
+        <div *ngIf="!cargandoInstrumentos" class="flex-grow max-h-[350px] overflow-y-auto pr-3 flex flex-col gap-2 custom-scroll" [class.opacity-50]="procesando">
+          <button *ngFor="let inst of instrumentosFiltrados" 
+                  [disabled]="procesando"
+                  (click)="seleccionar(inst)" 
+                  [class.border-[#d4af37]]="instrumentoSeleccionado?.nombre === inst.nombre"
+                  [class.bg-[#1a1a1a]]="instrumentoSeleccionado?.nombre === inst.nombre"
+                  class="bg-[#121212] hover:bg-[#1a1a1a] border border-transparent py-4 px-6 rounded-2xl transition-all group flex justify-between items-center text-left disabled:cursor-not-allowed">
+            <span class="text-white text-[10px] font-bold uppercase tracking-widest group-hover:text-[#d4af37]"
+                  [class.text-[#d4af37]]="instrumentoSeleccionado?.nombre === inst.nombre">
+              {{inst.nombre}}
+            </span>
+            <span class="text-[8px] text-gray-700 uppercase italic">{{inst.familia}}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-[#0a0a0a] border border-white/5 p-10 rounded-[40px] shadow-2xl flex flex-col text-center justify-between">
+        <div>
+          <span class="text-gray-700 text-xs font-bold tracking-widest uppercase block mb-2">Paso 03</span>
+          <h3 class="text-[#d4af37] font-serif text-xl tracking-[0.2em] uppercase italic mb-12">Procesar</h3>
+        </div>
+
+        <div *ngIf="!nombreArchivo || !instrumentoSeleccionado" class="flex flex-col items-center justify-center opacity-40 flex-grow">
+          <div class="text-4xl mb-4">⚙️</div>
+          <p class="text-gray-400 text-[10px] uppercase tracking-widest leading-relaxed">Cargue un archivo y<br>seleccione un instrumento<br>para continuar.</p>
+        </div>
+
+        <div *ngIf="nombreArchivo && instrumentoSeleccionado" class="flex flex-col items-center justify-center flex-grow animate-fade-in">
+          <div class="bg-[#121212] w-full p-6 rounded-[20px] border border-white/5 mb-8" [class.opacity-50]="procesando">
+            <p class="text-gray-600 text-[8px] uppercase tracking-[0.3em] mb-2">Archivo Origen</p>
+            <p class="text-white text-[11px] mb-6 truncate font-bold">{{nombreArchivo}}</p>
+            
+            <div class="w-full h-px bg-white/5 mb-6"></div>
+
+            <p class="text-gray-600 text-[8px] uppercase tracking-[0.3em] mb-2">Instrumento Destino</p>
+            <h3 class="text-[#d4af37] font-serif text-2xl uppercase tracking-[0.1em]">{{nombreInstrumentoSeleccionado}}</h3>
+          </div>
+
+          <button (click)="transponer()" [disabled]="procesando"
+                  class="bg-[#d4af37] text-black w-full py-5 rounded-full text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-white transition-all shadow-lg shadow-[#d4af37]/10 hover:shadow-[#d4af37]/30 hover:scale-105 duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex justify-center items-center">
+            <span *ngIf="!procesando">Transponer Ahora</span>
+            <span *ngIf="procesando" class="animate-pulse flex items-center gap-2">
+              ⏳ Procesando...
+            </span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>

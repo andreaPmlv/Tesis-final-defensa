@@ -1,0 +1,51 @@
+<section class="result-page">
+  <div class="result-page__inner">
+    <header class="result-header">
+      <div>
+        <h1 class="result-title">¡Partitura Transpuesta!</h1>
+        <p class="result-subtitle">
+          Arreglo listo para <strong>{{ instrument }}</strong>
+        </p>
+      </div>
+
+      <div class="result-actions">
+        <button
+          type="button"
+          class="result-action result-action--primary"
+          [disabled]="isLoading || !!errorMessage"
+          (click)="printScore()"
+        >
+          Descargar / Imprimir PDF
+        </button>
+
+        <button
+          type="button"
+          class="result-action"
+          [disabled]="isLoading || !!errorMessage"
+          (click)="downloadXml()"
+        >
+          Descargar XML
+        </button>
+
+        <a routerLink="/transposer" class="result-link">Transponer otra</a>
+      </div>
+    </header>
+
+    <div *ngIf="errorMessage" class="result-error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="isLoading" class="result-loading">
+      Procesando y preparando la partitura...
+    </div>
+
+    <div class="result-viewer-shell" [class.result-viewer-shell--inactive]="!!errorMessage">
+      <div *ngIf="isLoading" class="result-viewer-overlay">
+        Renderizando partitura...
+      </div>
+      <div class="result-viewer">
+        <div #scoreViewer class="score-viewer"></div>
+      </div>
+    </div>
+  </div>
+</section>

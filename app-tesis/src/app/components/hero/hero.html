@@ -1,0 +1,23 @@
+<section class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+  
+  <img src="/sala2.png" alt="Fondo Isoscore" class="absolute inset-0 w-full h-full object-cover z-0">
+
+  <div class="absolute inset-0 bg-black/60 z-10"></div>
+
+  <div class="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-iso-black via-iso-black/80 to-transparent z-20"></div>
+
+  <div class="relative z-30 flex flex-col items-center">
+    <h1 class="text-6xl md:text-8xl font-serif text-white font-normal tracking-widest mb-4 drop-shadow-2xl">
+      BIENVENIDO
+    </h1>
+    <p class="text-sm md:text-xl text-gray-300 tracking-[0.2em] mb-12 uppercase max-w-3xl">
+      Elevando la tradición orquestal a la era digital
+    </p>
+    <button 
+      (click)="irAEstadisticas()"
+      class="bg-iso-gold text-iso-black px-10 py-4 rounded-full font-bold text-xs tracking-[0.3em] uppercase hover:bg-white hover:scale-105 transition-all duration-500 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+      {{ currentUser ? 'IR A TRANSPONER' : 'COMENZAR AHORA' }}
+    </button>
+  </div>
+
+</section>

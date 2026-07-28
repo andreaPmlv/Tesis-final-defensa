@@ -1,0 +1,87 @@
+<nav class="sticky top-0 left-0 w-full z-[100] px-6 py-4 bg-black/10 backdrop-blur-sm border-b border-white/5">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <div routerLink="/" class="cursor-pointer group">
+      <h1 class="text-white font-serif text-xl tracking-[0.3em] uppercase group-hover:text-iso-gold transition-colors">
+        Iso<span class="text-iso-gold italic">score</span>
+      </h1>
+    </div>
+
+    <div class="flex items-center gap-8">
+      <div *ngIf="!currentUser" class="flex items-center gap-6">
+        <a routerLink="/login" class="text-[10px] text-gray-400 hover:text-white uppercase tracking-[0.2em] transition-colors">
+          Ingresar
+        </a>
+        <button routerLink="/register" 
+          class="bg-iso-gold text-black px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-all duration-500 shadow-lg shadow-iso-gold/10">
+          Registrarse
+        </button>
+      </div>
+
+      <div *ngIf="currentUser as user" class="flex items-center gap-4 animate-fade-in">
+        <a
+          *ngIf="user.is_admin"
+          routerLink="/admin"
+          (click)="closeProfileMenu()"
+          class="hidden sm:inline-flex items-center gap-2 rounded-xl border border-iso-gold/80 bg-iso-gold/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-iso-gold transition-all duration-300 hover:bg-iso-gold hover:text-black"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.67 0-8 1.34-8 4v1h10.26A6.97 6.97 0 0114 17c0-1.41.42-2.73 1.14-3.83C13.76 13.06 11.79 13 8 13zm10.5 1L17 15.5l-1.5-1.5-1 1 1.5 1.5-1.5 1.5 1 1 1.5-1.5 1.5 1.5 1-1-1.5-1.5 1.5-1.5-1-1z"/>
+          </svg>
+          Panel Admin
+        </a>
+
+        <div class="profile-menu-wrapper relative">
+          <button
+            type="button"
+            (click)="toggleProfileMenu()"
+            class="flex items-center gap-3 rounded-full border border-iso-gold/80 bg-black/35 pl-2 pr-4 py-1.5 transition-all duration-300 hover:bg-black/60"
+          >
+            <span class="flex h-11 w-11 items-center justify-center rounded-full border-2 border-iso-gold text-iso-gold">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+            </span>
+
+            <span class="hidden sm:flex flex-col items-start">
+              <span class="text-base font-semibold text-iso-gold">{{ user.username }}</span>
+              <span class="text-xs text-white/70">{{ user.is_admin ? 'Administrador' : 'Músico' }}</span>
+            </span>
+          </button>
+
+          <div
+            *ngIf="profileMenuOpen"
+            class="absolute right-0 mt-3 w-[300px] rounded-2xl border border-iso-gold/80 bg-[#1a1a1a]/95 p-5 shadow-2xl shadow-black/50 backdrop-blur-md"
+          >
+            <div class="border-b border-white/15 pb-3">
+              <p class="text-2xl font-bold uppercase tracking-wide text-iso-gold">Mis datos</p>
+            </div>
+
+            <div class="space-y-2 pt-4 text-white">
+              <p class="text-lg"><span class="font-semibold">Usuario:</span> {{ user.username }}</p>
+              <p class="text-lg break-all"><span class="font-semibold">Email:</span> {{ user.email }}</p>
+            </div>
+
+            <div class="mt-4 flex items-center justify-between gap-3">
+              <a
+                *ngIf="user.is_admin"
+                routerLink="/admin"
+                (click)="closeProfileMenu()"
+                class="inline-flex items-center rounded-xl border border-iso-gold/80 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-iso-gold transition-colors hover:bg-iso-gold hover:text-black sm:hidden"
+              >
+                Panel Admin
+              </a>
+
+              <button
+                type="button"
+                (click)="logout()"
+                class="ml-auto inline-flex items-center rounded-xl bg-iso-gold px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-black transition-colors hover:bg-white"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

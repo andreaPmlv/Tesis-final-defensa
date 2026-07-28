@@ -1,0 +1,99 @@
+<section class="min-h-screen bg-black flex items-center justify-center p-6 relative overflow-hidden">
+  <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-iso-gold/10 rounded-full blur-[120px]"></div>
+
+  <div class="w-full max-w-md z-10">
+    <div class="bg-white/[0.03] backdrop-blur-2xl border border-white/10 p-10 rounded-3xl shadow-2xl">
+      <div class="text-center mb-10">
+        <h2 class="text-white font-serif text-3xl mb-2 tracking-widest uppercase">Iniciar Sesión</h2>
+        <p class="text-gray-500 text-[9px] tracking-[0.4em] uppercase font-light">Accede a tu cuenta</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="space-y-5">
+        <div *ngIf="errorMessage" class="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-[10px] uppercase tracking-widest text-red-300">
+          {{ errorMessage }}
+        </div>
+        
+        <div class="space-y-2">
+          <label class="text-[9px] text-iso-gold/60 uppercase tracking-widest ml-1">Correo Electrónico</label>
+          <input formControlName="email" type="email" placeholder="usuario@elsistema.org" 
+            class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white text-sm focus:outline-none focus:border-iso-gold/40 transition-all">
+          <p *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid" class="text-red-500 text-[8px] uppercase tracking-widest ml-1">Email requerido</p>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-[9px] text-iso-gold/60 uppercase tracking-widest ml-1">Contraseña</label>
+          <div class="relative">
+            <input formControlName="password" [type]="showPassword ? 'text' : 'password'" placeholder="••••••••" 
+              class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 pr-14 text-white text-sm focus:outline-none focus:border-iso-gold/40 transition-all">
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="absolute inset-y-0 right-0 flex items-center px-4 text-gray-400 hover:text-iso-gold transition-colors"
+              [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+              <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                <circle cx="12" cy="12" r="3" stroke-width="1.8"></circle>
+              </svg>
+              <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 3l18 18" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.58 10.58A2 2 0 0012 14a2 2 0 001.42-.58" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.88 5.09A10.94 10.94 0 0112 5c4.48 0 8.27 2.94 9.54 7a10.96 10.96 0 01-4.04 5.14M6.23 6.23A10.95 10.95 0 002.46 12a10.96 10.96 0 005.31 6.01" />
+              </svg>
+            </button>
+          </div>
+          <p *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="text-red-500 text-[8px] uppercase tracking-widest ml-1">Mínimo 8 caracteres</p>
+        </div>
+
+        <button type="submit" [disabled]="isSubmitting"
+          class="w-full bg-iso-gold text-black font-bold py-5 mt-4 rounded-xl uppercase tracking-[0.3em] text-[10px] hover:bg-white transition-all duration-500">
+          {{ isSubmitting ? 'ENTRANDO...' : 'ENTRAR' }}
+        </button>
+
+        <div class="flex flex-col gap-4 text-center mt-8">
+          <p routerLink="/forgot-password" class="cursor-pointer text-gray-500 text-[9px] tracking-widest uppercase hover:text-iso-gold transition-colors">
+            ¿Olvidaste tu contraseña?
+          </p>
+          
+          <div class="w-8 h-px bg-white/10 mx-auto"></div>
+
+          <p routerLink="/register" class="cursor-pointer text-gray-500 text-[9px] tracking-widest uppercase">
+            ¿No tienes cuenta? <span class="text-iso-gold underline underline-offset-4">Regístrate aquí</span>
+          </p>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="showRestrictedModal" class="absolute inset-0 z-30 flex items-center justify-center bg-black/85 p-6 backdrop-blur-sm">
+    <div class="w-full max-w-md rounded-3xl border border-red-400/25 bg-[#0b0b0b] p-8 text-center shadow-2xl">
+      <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-red-400/30 bg-red-500/10 text-red-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M4.93 19h14.14c1.54 0 2.5-1.67 1.73-3L13.73 3c-.77-1.33-2.69-1.33-3.46 0L3.2 16c-.77 1.33.19 3 1.73 3z" />
+        </svg>
+      </div>
+
+      <p class="mb-3 text-[11px] font-bold uppercase tracking-[0.35em] text-red-300">Acceso restringido</p>
+      <h3 class="mb-4 font-serif text-2xl uppercase tracking-[0.15em] text-white">No puedes ingresar</h3>
+      <p class="mb-8 text-sm leading-relaxed text-white/70">
+        {{ restrictedMessage || 'Tu acceso ha sido restringido por un administrador.' }}
+      </p>
+
+      <div class="flex flex-col gap-3">
+        <button
+          type="button"
+          (click)="closeRestrictedModal()"
+          class="w-full rounded-xl bg-iso-gold px-5 py-4 text-[10px] font-bold uppercase tracking-[0.3em] text-black transition-all duration-300 hover:bg-white">
+          Entendido
+        </button>
+
+        <a
+          routerLink="/"
+          (click)="closeRestrictedModal()"
+          class="w-full rounded-xl border border-white/10 px-5 py-4 text-[10px] font-bold uppercase tracking-[0.3em] text-white/70 transition-all duration-300 hover:border-iso-gold/40 hover:text-iso-gold">
+          Volver al inicio
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
