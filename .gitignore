@@ -13,3 +13,7 @@ __pycache__/
 # IDEs
 .vscode/
 .idea/
+
+# Database files
+app-tesis/isoscore.db
+app-tesis/instance/isoscore.db
