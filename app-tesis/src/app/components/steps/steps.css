@@ -21,15 +21,204 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Botón dorado estilo Isoscore */
-.transponer-btn {
-  background-color: #d4af37;
-  color: black;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+.step-input-wrapper {
+  position: relative;
 }
+
+.step-input {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(18, 18, 18, 0.95);
+  border-radius: 999px;
+  padding: 1rem 3rem 1rem 1.4rem;
+  color: #f7f7f7;
+  font-size: 0.88rem;
+  letter-spacing: 0.16em;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.step-input:focus {
+  border-color: rgba(212, 175, 55, 0.8);
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.08);
+}
+
+.step-input-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #d4af37;
+  font-size: 0.9rem;
+}
+
+.instrument-dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin-top: 0.75rem;
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(12, 12, 12, 0.96);
+  border-radius: 28px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.45);
+  padding: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .instrument-dropdown {
+    position: relative;
+    box-shadow: none;
+    margin-top: 0.75rem;
+    max-height: none;
+    overflow: visible;
+    border-radius: 22px;
+    padding: 0.5rem;
+  }
+
+  .step-input {
+    padding-right: 3.5rem;
+  }
+
+  .step-input-toggle {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #d4af37;
+    font-size: 0.95rem;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+.instrument-item {
+  width: 100%;
+  text-align: left;
+  background: rgba(17, 17, 17, 0.95);
+  color: #f7f7f7;
+  padding: 1rem 1.2rem;
+  border-radius: 22px;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.65rem;
+}
+
+.instrument-item:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(212, 175, 55, 0.18);
+  transform: translateY(-1px);
+}
+
+.instrument-item-selected {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.instrument-name {
+  color: #f7f7f7;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+}
+
+.instrument-meta {
+  color: #b8a45d;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.selected-instrument-card {
+  margin-top: 1rem;
+  padding: 1rem 1.2rem;
+  border-radius: 26px;
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  background: rgba(16, 16, 16, 0.9);
+}
+
+.selected-chip {
+  display: inline-flex;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.64rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: #b8a45d;
+  background: rgba(212, 175, 55, 0.08);
+  margin-bottom: 0.75rem;
+}
+
+.selected-name {
+  color: #ffffff;
+  font-size: 0.98rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.selected-meta {
+  color: #9a8f66;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  margin-top: 0.3rem;
+}
+
+.transponer-btn {
+  background: #d4af37;
+  color: #050505;
+  box-shadow: 0 18px 55px rgba(212, 175, 55, 0.16);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
 .transponer-btn:hover {
-  background-color: white;
+  background: #f7e29e;
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
+  box-shadow: 0 22px 70px rgba(212, 175, 55, 0.22);
+}
+
+@media (max-width: 768px) {
+  .instrument-dropdown {
+    position: relative;
+    box-shadow: none;
+    margin-top: 0.75rem;
+    max-height: 280px;
+    border-radius: 22px;
+    padding: 0.5rem;
+  }
+
+  .instrument-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .step-input {
+    padding-right: 3.5rem;
+  }
+
+  .step-input-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .step-input-toggle {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #d4af37;
+    font-size: 0.95rem;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+  }
 }

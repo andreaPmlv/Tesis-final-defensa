@@ -68,6 +68,27 @@ INSTRUMENT_FAMILY_MAP = {
     "Flauta Alto en Sol": "Madera"
 }
 
+INSTRUMENT_CODE_MAP = {
+    "Partitura Original (Sin cambios)": "GEN",
+    "Flauta / Oboe / Violín": "FOV",
+    "Piano / Guitarra / Voz": "PGV",
+    "Trombón / Tuba / Violonchelo": "TTV",
+    "Trompeta en Sib": "SIB",
+    "Clarinete en Sib": "CLASIB",
+    "Saxofón Soprano": "SSO",
+    "Saxofón Tenor": "STEN",
+    "Clarinete Bajo": "CLAB",
+    "Saxofón Alto": "SALT",
+    "Corno Alto (Eb Horn)": "EBC",
+    "Saxofón Barítono": "SBAR",
+    "Clarinete en Mib (Requinto)": "CLAMIB",
+    "Corno Francés (Trompa) en Fa": "CFa",
+    "Corno Inglés": "CING",
+    "Clarinete en La": "CLALA",
+    "Oboe d'Amore": "ODO",
+    "Flauta Alto en Sol": "FAS"
+}
+
 ALLOWED_ORIGINS = {
     os.getenv('FRONTEND_BASE_URL', 'http://localhost:4200')
 }
@@ -500,7 +521,8 @@ def api_instruments():
     instruments = [
         {
             'nombre': instrument_name,
-            'familia': INSTRUMENT_FAMILY_MAP.get(instrument_name, 'General')
+            'familia': INSTRUMENT_FAMILY_MAP.get(instrument_name, 'General'),
+            'clave': INSTRUMENT_CODE_MAP.get(instrument_name, '')
         }
         for instrument_name in INSTRUMENT_TRANSPOSITION_MAP.keys()
     ]

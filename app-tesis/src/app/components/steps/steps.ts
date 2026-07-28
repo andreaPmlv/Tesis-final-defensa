@@ -17,6 +17,7 @@ export class StepsComponent implements OnInit {
   nombreArchivo: string = '';
   instrumentoSeleccionado: InstrumentOption | null = null;
   busqueda: string = '';
+  instrumentDropdownOpen = false;
   
   // Variables del proceso real
   procesando: boolean = false;
@@ -44,13 +45,35 @@ export class StepsComponent implements OnInit {
   }
 
   get instrumentosFiltrados(): InstrumentOption[] {
-    return this.instrumentos.filter(inst => 
-      inst.nombre.toLowerCase().includes(this.busqueda.toLowerCase())
+    const texto = this.busqueda.toLowerCase().trim();
+    if (!texto) {
+      return this.instrumentos;
+    }
+
+    return this.instrumentos.filter(inst =>
+      inst.nombre.toLowerCase().includes(texto) ||
+      inst.familia.toLowerCase().includes(texto) ||
+      inst.clave?.toLowerCase().includes(texto)
     );
   }
 
   get nombreInstrumentoSeleccionado(): string {
     return this.instrumentoSeleccionado?.nombre ?? '';
+  }
+
+  cerrarDesplegable(): void {
+    this.instrumentDropdownOpen = false;
+  }
+
+  toggleInstrumentDropdown(): void {
+    this.instrumentDropdownOpen = !this.instrumentDropdownOpen;
+  }
+
+  seleccionar(inst: InstrumentOption): void {
+    this.instrumentoSeleccionado = inst;
+    this.busqueda = inst.nombre;
+    this.errorMessage = '';
+    this.cerrarDesplegable();
   }
 
   onFileSelected(event: Event): void {
@@ -61,11 +84,6 @@ export class StepsComponent implements OnInit {
       this.nombreArchivo = file.name;
       this.errorMessage = '';
     }
-  }
-
-  seleccionar(inst: InstrumentOption): void {
-    this.instrumentoSeleccionado = inst;
-    this.errorMessage = '';
   }
 
   transponer(): void {
