@@ -69,9 +69,12 @@ INSTRUMENT_FAMILY_MAP = {
 }
 
 ALLOWED_ORIGINS = {
-    os.getenv('FRONTEND_BASE_URL', 'http://localhost:4200'),
-    "http://127.0.0.1:4200"
+    os.getenv('FRONTEND_BASE_URL', 'http://localhost:4200')
 }
+ALLOWED_ORIGIN_PREFIXES = (
+    'http://localhost',
+    'http://127.0.0.1'
+)
 FRONTEND_BASE_URL = os.getenv('FRONTEND_BASE_URL', 'http://localhost:4200')
 
 app = Flask(__name__)
@@ -178,7 +181,7 @@ def handle_preflight():
 @app.after_request
 def add_cors_headers(response):
     origin = request.headers.get('Origin')
-    if origin in ALLOWED_ORIGINS:
+    if origin in ALLOWED_ORIGINS or any(origin.startswith(prefix) for prefix in ALLOWED_ORIGIN_PREFIXES if origin):
         response.headers['Access-Control-Allow-Origin'] = origin
         response.headers['Access-Control-Allow-Credentials'] = 'true'
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
