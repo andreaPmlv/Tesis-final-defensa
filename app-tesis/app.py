@@ -8,6 +8,9 @@ Fecha: Enero 2026
 """
 import os
 import re
+from dotenv import load_dotenv
+
+load_dotenv()
 from flask import Flask, Response, render_template, request, flash, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -66,25 +69,30 @@ INSTRUMENT_FAMILY_MAP = {
 }
 
 ALLOWED_ORIGINS = {
-    "http://localhost:4200",
+    os.getenv('FRONTEND_BASE_URL', 'http://localhost:4200'),
     "http://127.0.0.1:4200"
 }
-FRONTEND_BASE_URL = "http://localhost:4200"
+FRONTEND_BASE_URL = os.getenv('FRONTEND_BASE_URL', 'http://localhost:4200')
 
 app = Flask(__name__)
 
 # --- EMAIL ---
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'isoscore.am@gmail.com'
-app.config['MAIL_PASSWORD'] = 'wjrc coew ewjj eqcx'
-app.config['MAIL_DEFAULT_SENDER'] = ('IsoScore Admin', 'isoscore.am@gmail.com')
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS', 'True').lower() in ('1', 'true', 'yes')
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME', 'isoscore.am@gmail.com')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD', '')
+app.config['MAIL_DEFAULT_SENDER'] = (
+    os.getenv('MAIL_DEFAULT_NAME', 'IsoScore Admin'),
+    os.getenv('MAIL_DEFAULT_SENDER', os.getenv('MAIL_USERNAME', 'isoscore.am@gmail.com'))
+)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['PROCESSED_FOLDER'] = PROCESSED_FOLDER
-app.config['SECRET_KEY'] = 'esto-es-super-secreto-cambialo-luego'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_DIR, 'isoscore.db')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'esto-es-super-secreto-cambialo-luego')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
+    'DATABASE_URL', 'sqlite:///' + os.path.join(BASE_DIR, 'isoscore.db')
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
