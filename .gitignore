@@ -1,0 +1,15 @@
+# Root .gitignore for tesis-finaldefensa
+
+# Ignore environment files
+.env
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# IDEs
+.vscode/
+.idea/
