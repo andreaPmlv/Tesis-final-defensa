@@ -5,6 +5,7 @@ Repositorio con frontend (Angular) y backend (Flask) para el proyecto `tesis-fin
 ## Estructura
 
 - `app-tesis/` — código del frontend y backend (Angular + Flask).
+- `app-tesis/instance/isoscore.db` — base de datos SQLite usada por la aplicación.
 
 ## Ejecutar el backend (Flask)
 
@@ -50,6 +51,12 @@ npm start
 ```
 
 El frontend correrá por defecto en `http://localhost:4200`.
+
+## Notas de base de datos
+
+- El archivo de la base de datos usado por el backend es `app-tesis/instance/isoscore.db`.
+- El archivo `app-tesis/isoscore.db` fue eliminado para evitar confusiones.
+- No subas tu `.env` al repositorio.
 
 ## Otras notas
 
