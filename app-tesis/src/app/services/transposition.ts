@@ -6,6 +6,7 @@ import { API_BASE_URL } from './api-config';
 export interface InstrumentOption {
   nombre: string;
   familia: string;
+  clave?: string;
 }
 
 export interface TranspositionResponse {
